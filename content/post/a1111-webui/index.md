@@ -61,23 +61,24 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 
-### Compile PyTorch 2.0.0
+### Compile PyTorch 2.0.1
 
 ```bash
 # must be in venv
 cd ~/stable-diffusion
 source venv/bin/activate
 
-curl -L -O https://github.com/pytorch/pytorch/releases/download/v2.0.0/pytorch-v2.0.0.tar.gz
-tar -xzvf pytorch-v2.0.0.tar.gz
+curl -L -O https://github.com/pytorch/pytorch/releases/download/v2.0.1/pytorch-v2.0.1.tar.gz
+tar -xzvf pytorch-v2.0.1.tar.gz
 
-cd pytorch-v2.0.0
+cd pytorch-v2.0.1
+echo 2.0.1 > version.txt
 
 # update the path to yours
 export CMAKE_PREFIX_PATH="%HOME/stable-diffusion/venv"
 
-export PYTORCH_ROCM_ARCH=gfx1100
 export USE_CUDA=0
+export PYTORCH_ROCM_ARCH=gfx1100
 
 pip install cmake ninja
 pip install -r requirements.txt
@@ -113,24 +114,23 @@ PYTORCH_TEST_WITH_ROCM=1 python3 test/run_test.py --verbose
 
 I failed in `test/profiler/test_profiler.py`, but it doesn't affect `stable-diffusion-webui` (hopefully).
 
-### Compile torchvision 0.15.1
+### Compile torchvision 0.15.2
 
 ```bash
 # must be in venv
 cd ~/stable-diffusion
 source venv/bin/activate
 
-curl -L -O https://github.com/pytorch/vision/archive/refs/tags/v0.15.1.tar.gz
-tar -xzvf v0.15.1.tar.gz
+curl -L -O https://github.com/pytorch/vision/archive/refs/tags/v0.15.2.tar.gz
+tar -xzvf v0.15.2.tar.gz
 
-cd vision-0.15.1
+cd vision-0.15.2
+echo 0.15.2 > version.txt
 
 # update the path to yours
 export CMAKE_PREFIX_PATH="%HOME/stable-diffusion/venv"
 
-# might be optional for torchvision
-export PYTORCH_ROCM_ARCH=gfx1100
-export USE_CUDA=0
+export FORCE_CUDA=1
 
 python3 setup.py install
 ```
@@ -152,21 +152,19 @@ sed '/torch/d' requirements.txt
 
 pip install -r requirements.txt
 
-# might not be needed if there is only one gpu
+# not needed if only one gpu is present
 export HIP_VISIBLE_DEVICES=0
 
 python3 launch.py
 ```
-
-### Caveats
-
-> `CodeFormer` will raise exception when checking `pytorch`'s version, which is `2.0.0a0`, thus face restoration is unavailable for now.
 
 ### Conclusions
 
 At first, I was building `pytorch` in Docker, with [rocm/composable_kernel:ck_ub20.04_rocm5.5](https://hub.docker.com/layers/rocm/composable_kernel/ck_ub20.04_rocm5.5/images/sha256-7ecc3b5e2e0104a58188ab5f26085c31815d2ed03955d66b805fc10d9e1f6873?context=explore) as the base, but I encountered Segmentation Fault and didn't have the time to try again. Hopefully [rocm/pytorch](https://hub.docker.com/r/rocm/pytorch) will update in recent days too.
 
 Compared to ROCm 5.5 RC4 in Docker, ROCm 5.5 + bare installation does improve in stability and VRAM management. Performance can be optimized further, but I am satisfied now.
+
+UPDATE: Using `PYTORCH_ROCM_ARCH=gfx1100` to build `torch` with support for 7000 series, and `FORCE_CUDA=1` to build `torchvision` with complete support for ROCm. You should not encounter Segmentation Fault after that.
 
 ## References
 
