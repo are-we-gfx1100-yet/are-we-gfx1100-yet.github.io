@@ -24,6 +24,10 @@ source venv/bin/activate
 # install custom torch and torchvision
 pip install ~/Downloads/torch-2.0.1+git8f7b63d-cp310-cp310-linux_x86_64.whl
 pip install ~/Downloads/torchvision-0.15.2+8f7b63d-cp310-cp310-linux_x86_64.whl
+
+# patch installer.py
+# remove HSA_OVERRIDE_GFX_VERSION which will fail our gfx1100
+sed -i "/os.environ.setdefault('HSA_OVERRIDE_GFX_VERSION', '10.3.0')/d" installer.py
 ```
 
 ## Launch
@@ -34,6 +38,28 @@ pip install ~/Downloads/torchvision-0.15.2+8f7b63d-cp310-cp310-linux_x86_64.whl
 ```
 
 ## Caveats
+
+### `RuntimeError: HIP error: invalid argument`
+
+Don't forget to run this:
+
+```bash
+# patch installer.py
+# remove HSA_OVERRIDE_GFX_VERSION which will fail our gfx1100
+sed -i "/os.environ.setdefault('HSA_OVERRIDE_GFX_VERSION', '10.3.0')/d" installer.py
+```
+
+### `PyTorch was not compiled with MAGMA support`
+
+The UniPC sampler uses MAGMA, which is not essential and I skip it.
+
+Just use other samplers instead.
+
+### `HIP out of memory`
+
+Go to Settings in Automatic WebUI, set "Cross-attention optimization method" to "Doggettx's" and restart the process (not "Restart Server").
+
+Currently, SDP attention unfortunately doesn't help with RX 7900 XTX's iteration speed and is memory hungry. It's better switch back to old optimization and stay tuned.
 
 ### `ring sdma0 timeout`
 
