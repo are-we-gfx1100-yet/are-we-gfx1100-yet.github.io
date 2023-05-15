@@ -57,9 +57,9 @@ Just use other samplers instead.
 
 ### `HIP out of memory`
 
-Go to Settings in Automatic WebUI, set "Cross-attention optimization method" to "Doggettx's" and restart the process (not "Restart Server").
+Go to "Settings" in Automatic WebUI, set "Cross-attention optimization method" to "Doggettx's" and restart the process (not "Restart Server").
 
-Currently, SDP attention unfortunately doesn't help with RX 7900 XTX's iteration speed and is memory hungry. It's better switch back to old optimization and stay tuned.
+Currently, SDP attention unfortunately doesn't help with RX 7900 XTX's iteration speed and is memory hungry. It's better to switch back to old optimization and stay tuned.
 
 ### `ring sdma0 timeout`
 
