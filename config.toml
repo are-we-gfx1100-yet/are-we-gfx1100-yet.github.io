@@ -2,3 +2,26 @@ baseURL = 'https://evshiron.github.io/are-we-gfx1100-yet/'
 languageCode = 'en-us'
 title = 'Are we gfx1100 yet?'
 theme = 'hugo-theme-stack'
+
+[params]
+dataFormat.published = 'Jan 01, 2000'
+
+[main]
+
+[[menu.social]]
+identifier = 'github'
+name = 'GitHub'
+url = 'https://github.com/evshiron'
+params.icon = 'brand-github'
+
+[[menu.main]]
+identifier = 'home'
+name = 'Home'
+url = '/'
+params.icon = 'home'
+
+[[menu.main]]
+identifier = 'source'
+name = 'Source'
+url = 'https://github.com/evshiron/are-we-gfx1100-yet'
+params.icon = 'brand-github'
