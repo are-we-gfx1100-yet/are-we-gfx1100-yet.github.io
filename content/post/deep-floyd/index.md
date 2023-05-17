@@ -3,12 +3,21 @@ title: Run deep-floyd/IF on RX 7900 XTX
 date: 2023-05-17
 ---
 
+## Prerequisites
+
+Download and install the following prebuilt wheels into your venv:
+
+* `torch`: https://github.com/evshiron/rocm_lab/actions/runs/4981092645
+* `torchvision`: https://github.com/evshiron/rocm_lab/actions/runs/4980987375
+
+## Example
+
 The following script is modified from https://github.com/deep-floyd/IF/blob/develop/README.md:
 
 * load local models instead of fetching from Hugging Face
 * resize stage 2 image from 256x256 to 240x240 to avoid HIP out of memory
 
-```bash
+```python
 from diffusers import DiffusionPipeline
 from diffusers.utils import pt_to_pil
 import torch
@@ -52,3 +61,17 @@ pil_image = pt_to_pil(image)[0].resize((240, 240))
 image = stage_3(prompt=prompt, image=pil_image, generator=generator, noise_level=100).images
 image[0].save("./if_stage_III.png")
 ```
+
+## Performance
+
+* Stage 1: 100/100 [02:01<00:00,  1.21s/it]
+* Stage 2: 50/50 [00:31<00:00,  1.57it/s]
+* Stage 3: 75/75 [00:09<00:00,  7.71it/s]
+
+## Conclusions
+
+After installing our pre-built PyTorch, we were able to successfully run the three-step example script of [deep-floyd/IF](https://github.com/deep-floyd/IF) on RX 7900 XTX. 
+
+However, we also found that there is still some gap in the memory management of ROCm devices compared to CUDA devices that can use xFormers, which requires some compromise on image size.
+
+Hopefully, [deep-floyd/IF](https://github.com/deep-floyd/IF) will be integrated into existing Stable Diffusion solutions and employ technologies like attention optimization and tiled VAE, which should further unleash its power.
