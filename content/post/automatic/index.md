@@ -24,27 +24,37 @@ source venv/bin/activate
 # install custom torch and torchvision
 pip install ~/Downloads/torch-2.0.1+git8f7b63d-cp310-cp310-linux_x86_64.whl
 pip install ~/Downloads/torchvision-0.15.2+8f7b63d-cp310-cp310-linux_x86_64.whl
-
-# patch installer.py
-# remove HSA_OVERRIDE_GFX_VERSION which will fail our gfx1100
-sed -i "/os.environ.setdefault('HSA_OVERRIDE_GFX_VERSION', '10.3.0')/d" installer.py
 ```
 
 ## Launch
 
 ```bash
-# launch webui with --medvram
-./webui.sh --medvram
+# HSA_OVERRIDE_GFX_VERSION defaults to 10.3.0 and will fail our gfx1100 if we don't set it explicitly
+export HSA_OVERRIDE_GFX_VERSION=11.0.0
+
+# set up the launch arguments you want
+export COMMANDLINE_ARGS='--listen --medvram'
+
+./webui.sh
+
+
+# or
+HSA_OVERRIDE_GFX_VERSION=11.0.0 ./webui.sh --listen --medvram
 ```
 
 ## Caveats
 
 ### `RuntimeError: HIP error: invalid argument`
 
-Don't forget to run this:
+`HSA_OVERRIDE_GFX_VERSION` defaults to `10.3.0` when ROCm is detected, which will fail our RX 7000 series. So don't forget to set it explicitly:
 
 ```bash
-# patch installer.py
+HSA_OVERRIDE_GFX_VERSION=11.0.0 ./webui.sh
+```
+
+Or you can patch `installer.py` like this (not recommended):
+
+```bash
 # remove HSA_OVERRIDE_GFX_VERSION which will fail our gfx1100
 sed -i "/os.environ.setdefault('HSA_OVERRIDE_GFX_VERSION', '10.3.0')/d" installer.py
 ```
