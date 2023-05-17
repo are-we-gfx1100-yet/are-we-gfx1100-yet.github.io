@@ -1,6 +1,7 @@
 ---
 title: Run deep-floyd/IF on RX 7900 XTX
 date: 2023-05-17
+image: images/showcase/if_stage_III.png
 ---
 
 ## Prerequisites
@@ -67,6 +68,15 @@ image[0].save("./if_stage_III.png")
 * Stage 1: 100/100 [02:01<00:00,  1.21s/it]
 * Stage 2: 50/50 [00:31<00:00,  1.57it/s]
 * Stage 3: 75/75 [00:09<00:00,  7.71it/s]
+
+## Showcases
+
+![images/showcase/if_stage_I.png](images/showcase/if_stage_I.png)
+
+![images/showcase/if_stage_II.png](images/showcase/if_stage_II.png)
+
+![images/showcase/if_stage_III.png](images/showcase/if_stage_III.png)
+
 
 ## Conclusions
 
