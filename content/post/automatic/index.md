@@ -6,10 +6,18 @@ image: images/showcase/waifu.jpg
 
 ## Prerequisites
 
-Download the following prebuilt wheels and unzip into `~/Downloads`.
+Download the following prebuilt wheels into `~/Downloads`.
 
-* `torch`: https://github.com/evshiron/rocm_lab/actions/runs/4981092645
-* `torchvision`: https://github.com/evshiron/rocm_lab/actions/runs/4980987375
+* `torch`
+  * https://github.com/evshiron/rocm_lab/releases/download/v1.14.514/torch-2.0.1+gite19229c-cp310-cp310-linux_x86_64.whl
+* `torchvision`
+  * https://github.com/evshiron/rocm_lab/releases/download/v1.14.514/torchvision-0.15.2+f5f4cad-cp310-cp310-linux_x86_64.whl
+
+If somehow the above links become outdated, you can always find latest links here:
+
+* https://github.com/evshiron/rocm_lab/releases
+
+and don't forget to use their new filenames in "Install" section.
 
 ## Install
 
@@ -22,11 +30,13 @@ python3 -m venv venv
 source venv/bin/activate
 
 # install custom torch and torchvision
-pip install ~/Downloads/torch-2.0.1+git8f7b63d-cp310-cp310-linux_x86_64.whl
-pip install ~/Downloads/torchvision-0.15.2+8f7b63d-cp310-cp310-linux_x86_64.whl
+pip install ~/Downloads/torch-2.0.1+gite19229c-cp310-cp310-linux_x86_64.whl
+pip install ~/Downloads/torchvision-0.15.2+f5f4cad-cp310-cp310-linux_x86_64.whl
 ```
 
 ## Launch
+
+Copy and paste the following code as `launch.sh` in `automatic` dir:
 
 ```bash
 # HSA_OVERRIDE_GFX_VERSION defaults to 10.3.0 and will fail our gfx1100 if we don't set it explicitly
@@ -36,11 +46,9 @@ export HSA_OVERRIDE_GFX_VERSION=11.0.0
 export COMMANDLINE_ARGS='--listen --medvram'
 
 ./webui.sh
-
-
-# or
-HSA_OVERRIDE_GFX_VERSION=11.0.0 ./webui.sh --listen --medvram
 ```
+
+Afterwards, just `cd automatic`, and `bash launch.sh`, the WebUI should launch and just work.
 
 ## Caveats
 

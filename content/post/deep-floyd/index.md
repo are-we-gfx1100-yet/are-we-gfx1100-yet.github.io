@@ -4,12 +4,16 @@ date: 2023-05-17
 image: images/showcase/if_stage_III.png
 ---
 
-## Prerequisites
+Download the following prebuilt wheels and install into your `venv`.
 
-Download and install the following prebuilt wheels into your venv:
+* `torch`
+  * https://github.com/evshiron/rocm_lab/releases/download/v1.14.514/torch-2.0.1+gite19229c-cp310-cp310-linux_x86_64.whl
+* `torchvision`
+  * https://github.com/evshiron/rocm_lab/releases/download/v1.14.514/torchvision-0.15.2+f5f4cad-cp310-cp310-linux_x86_64.whl
 
-* `torch`: https://github.com/evshiron/rocm_lab/actions/runs/4981092645
-* `torchvision`: https://github.com/evshiron/rocm_lab/actions/runs/4980987375
+If somehow the above links become outdated, you can always find latest links here:
+
+* https://github.com/evshiron/rocm_lab/releases
 
 ## Example
 
