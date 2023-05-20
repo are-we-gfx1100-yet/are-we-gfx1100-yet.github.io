@@ -2,6 +2,12 @@
 title: Easy vladmandic/automatic on RX 7900 XTX
 date: 2023-05-15
 image: images/showcase/waifu.jpg
+tags:
+- torch
+- torchvision
+- automatic
+- stable-diffusion
+- tutorial
 ---
 
 ## Prerequisites

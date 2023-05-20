@@ -2,6 +2,11 @@
 title: Run deep-floyd/IF on RX 7900 XTX
 date: 2023-05-17
 image: images/showcase/if_stage_III.png
+tags:
+- torch
+- torchvision
+- deep-floyd
+- tutorial
 ---
 
 ## Prerequisites

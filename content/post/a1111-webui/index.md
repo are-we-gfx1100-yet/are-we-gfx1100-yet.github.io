@@ -1,6 +1,12 @@
 ---
 title: Run A1111 WebUI on Ubuntu 22.04 with RX 7900 XTX
 date: 2023-05-02
+tags:
+- torch
+- torchvision
+- a1111-webui
+- stable-diffusion
+- tutorial
 ---
 
 Yesterday I was regularly checking ROCm PRs, and surprised to discover that the ROCm 5.5.0 release notes had been merged, providing official support for my RTX 7900 XTX after a weeks-long wait. I can't wait to test it out.

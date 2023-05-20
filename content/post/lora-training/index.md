@@ -1,6 +1,13 @@
 ---
 title: LoRA training with vladmandic/automatic on RX 7900 XTX
 date: 2023-05-16
+tags:
+- torch
+- torchvision
+- automatic
+- lora
+- training
+- tutorial
 ---
 
 We will be using the training script from [vladmandic/automatic](https://github.com/vladmandic/automatic/), because it only uses PyTorch, and doesn't require `xformers` or `bitsandbytes`, which is good for ROCm devices. Impressive work.
