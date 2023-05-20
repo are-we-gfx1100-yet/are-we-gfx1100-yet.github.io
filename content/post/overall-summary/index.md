@@ -9,12 +9,13 @@ https://github.com/evshiron/rocm_lab/releases
 
 ## Recommended
 
-| Feature                          | Version                | Resource                                                                                 |
-| -------------------------------- | ---------------------- | ---------------------------------------------------------------------------------------- |
-| ROCm + A1111 WebUI               | 5.5.0 + 2.0.1 + latest | [Step by Step Tutorial](https://evshiron.github.io/are-we-gfx1100-yet/post/a1111-webui/) |
-| ROCm + Automatic                 | 5.5.0 + 2.0.1 + latest | [Easy Tutorial](https://evshiron.github.io/are-we-gfx1100-yet/post/automatic/)           |
-| ROCm + Automatic's LoRA training | 5.5.0 + 2.0.1 + latest | [Tutorial](https://evshiron.github.io/are-we-gfx1100-yet/post/lora-training/)            |
-| ROCm + deep-floyd/IF             | 5.5.0 + 2.0.1 + latest | [Tutorial](https://evshiron.github.io/are-we-gfx1100-yet/post/deep-floyd/)               |
+| Feature                          | Resource                                                                                 |
+| -------------------------------- | ---------------------------------------------------------------------------------------- |
+| ROCm + A1111 WebUI               | [Step by Step Tutorial](https://evshiron.github.io/are-we-gfx1100-yet/post/a1111-webui/) |
+| ROCm + Automatic                 | [Easy Tutorial](https://evshiron.github.io/are-we-gfx1100-yet/post/automatic/)           |
+| ROCm + Automatic's LoRA training | [Tutorial](https://evshiron.github.io/are-we-gfx1100-yet/post/lora-training/)            |
+| ROCm + deep-floyd/IF             | [Tutorial](https://evshiron.github.io/are-we-gfx1100-yet/post/deep-floyd/)               |
+| ROCm + tortoise-tts              | [Tutorial](https://github.com/evshiron/rocm_lab/issues/1)                                |
 
 ## Proofs of concepts
 
