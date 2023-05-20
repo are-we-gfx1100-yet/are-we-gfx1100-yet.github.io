@@ -6,6 +6,7 @@ theme = 'hugo-theme-stack'
 [params]
 dataFormat.published = 'Jan 01, 2000'
 article.license.enabled = true
+footer.customText = 'If my work has been helpful to you, please send me a star on GitHub!'
 
 [main]
 
@@ -27,6 +28,13 @@ identifier = 'discussions'
 name = 'Discussions'
 url = 'https://github.com/evshiron/are-we-gfx1100-yet/discussions'
 params.icon = 'messages'
+weight = 80
+
+[[menu.main]]
+identifier = 'rocm_lab'
+name = 'ROCm LAB'
+url = 'https://github.com/evshiron/rocm_lab'
+params.icon = 'brand-github'
 weight = 90
 
 [[menu.main]]
