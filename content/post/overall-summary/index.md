@@ -17,6 +17,7 @@ https://github.com/evshiron/rocm_lab/releases
 | ROCm + Automatic's LoRA training | [Tutorial](https://evshiron.github.io/are-we-gfx1100-yet/post/lora-training/)            |
 | ROCm + deep-floyd/IF             | [Tutorial](https://evshiron.github.io/are-we-gfx1100-yet/post/deep-floyd/)               |
 | ROCm + tortoise-tts              | [Tutorial](https://github.com/evshiron/rocm_lab/issues/1)                                |
+| ROCm + VisualGLM                 | [Tutorial](https://evshiron.github.io/are-we-gfx1100-yet/post/visual-glm/)               |
 
 ## Proofs of concepts
 
