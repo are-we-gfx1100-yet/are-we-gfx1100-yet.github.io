@@ -5,6 +5,7 @@ theme = 'hugo-theme-stack'
 
 [params]
 dataFormat.published = 'Jan 01, 2000'
+article.license.enabled = true
 
 [main]
 
