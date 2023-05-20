@@ -4,6 +4,8 @@ date: 2023-05-17
 image: images/showcase/if_stage_III.png
 ---
 
+## Prerequisites
+
 Download the following prebuilt wheels and install into your `venv`.
 
 * `torch`
