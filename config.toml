@@ -8,6 +8,19 @@ dataFormat.published = 'Jan 01, 2000'
 article.license.enabled = true
 footer.customText = 'If my work has been helpful to you, please send me a star on GitHub!'
 
+[params.widgets]
+
+[[params.widgets.homepage]]
+type = 'archives'
+params.limit = 3
+
+[[params.widgets.homepage]]
+type = 'tag-cloud'
+params.limit = 10
+
+[[params.widgets.page]]
+type = 'toc'
+
 [main]
 
 [[menu.social]]
