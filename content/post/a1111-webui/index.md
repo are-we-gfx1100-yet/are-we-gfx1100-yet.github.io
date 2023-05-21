@@ -167,13 +167,13 @@ export HIP_VISIBLE_DEVICES=0
 python3 launch.py
 ```
 
-### Caveats
+## Caveats
 
-#### `--no-half-vae` and `ring sdma0 timeout`
+### `--no-half-vae` and `ring sdma0 timeout`
 
 Usually you want to avoid some NaN issues via `--no-half-vae`, and it's enabled by default in `rocm_lab:rocm5.5-a1111-webui`. However, this makes `ring sdma0 timeout` much easier to raise, which resets the AMD GPU.
 
-### Conclusions
+## Conclusions
 
 At first, I was building `pytorch` in Docker, with [rocm/composable_kernel:ck_ub20.04_rocm5.5](https://hub.docker.com/layers/rocm/composable_kernel/ck_ub20.04_rocm5.5/images/sha256-7ecc3b5e2e0104a58188ab5f26085c31815d2ed03955d66b805fc10d9e1f6873?context=explore) as the base, but I encountered Segmentation Fault and didn't have the time to try again. Hopefully [rocm/pytorch](https://hub.docker.com/r/rocm/pytorch) will update in recent days too.
 
