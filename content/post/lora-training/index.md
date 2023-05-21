@@ -15,7 +15,7 @@ We will be using the training script from [vladmandic/automatic](https://github.
 ## Prerequisites
 
 * A working [vladmandic/automatic](https://github.com/vladmandic/automatic/) instance
-  * https://evshiron.github.io/are-we-gfx1100-yet/automatic/
+  * https://are-we-gfx1100-yet.github.io/automatic/
 * A set of images for training
 
 You can find a training image set from https://replicate.com/cloneofsimo/lora-training, but the training script doesn't support transparent images at the moment and you need to convert them to `.jpg`, using ImageMagick or something like that.
