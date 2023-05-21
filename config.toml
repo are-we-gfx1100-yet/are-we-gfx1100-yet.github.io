@@ -1,4 +1,4 @@
-baseURL = 'https://evshiron.github.io/are-we-gfx1100-yet/'
+baseURL = 'https://are-we-gfx1100-yet.github.io/'
 languageCode = 'en-us'
 title = 'Are we gfx1100 yet?'
 theme = 'hugo-theme-stack'
