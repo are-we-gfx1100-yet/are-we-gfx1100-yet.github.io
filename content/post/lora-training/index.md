@@ -14,9 +14,11 @@ We will be using the training script from [vladmandic/automatic](https://github.
 
 ## Prerequisites
 
-* A working [vladmandic/automatic](https://github.com/vladmandic/automatic/) instance
-  * https://are-we-gfx1100-yet.github.io/automatic/
-* A set of images for training
+### [Install AMDGPU driver with ROCm](https://docs.amd.com/bundle/ROCm-Installation-Guide-v5.5/page/How_to_Install_ROCm.html)
+
+### [A working Automatic installation](https://are-we-gfx1100-yet.github.io/automatic/)
+
+### A set of images for training
 
 You can find a training image set from https://replicate.com/cloneofsimo/lora-training, but the training script doesn't support transparent images at the moment and you need to convert them to `.jpg`, using ImageMagick or something like that.
 
