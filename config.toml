@@ -2,6 +2,7 @@ baseURL = 'https://are-we-gfx1100-yet.github.io/'
 languageCode = 'en-us'
 title = 'Are we gfx1100 yet?'
 theme = 'hugo-theme-stack'
+disqusShortname = 'are-we-gfx1100-yet'
 
 [params]
 dataFormat.published = 'Jan 01, 2000'
@@ -20,6 +21,10 @@ params.limit = 10
 
 [[params.widgets.page]]
 type = 'toc'
+
+[params.comments]
+enabled = true
+provider = 'disqus'
 
 [main]
 
