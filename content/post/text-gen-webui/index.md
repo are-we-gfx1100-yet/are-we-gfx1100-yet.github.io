@@ -1,5 +1,5 @@
 ---
-title: Run Text Generation WebUI on Ubuntu 22.04 with RX 7900 XTX
+title: Run Text Generation WebUI on RX 7900 XTX
 date: 2023-05-24
 tags:
 - torch
