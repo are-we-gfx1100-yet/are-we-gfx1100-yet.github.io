@@ -42,13 +42,6 @@ params.icon = 'home'
 weight = -100
 
 [[menu.main]]
-identifier = 'discussions'
-name = 'Discussions'
-url = 'https://github.com/are-we-gfx1100-yet/are-we-gfx1100-yet.github.io/discussions'
-params.icon = 'messages'
-weight = 80
-
-[[menu.main]]
 identifier = 'rocm_lab'
 name = 'ROCm LAB'
 url = 'https://github.com/evshiron/rocm_lab'
