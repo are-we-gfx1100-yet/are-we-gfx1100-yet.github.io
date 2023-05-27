@@ -11,7 +11,9 @@ tags:
 
 Yesterday I was regularly checking ROCm PRs, and surprised to discover that the ROCm 5.5.0 release notes had been merged, providing official support for my RTX 7900 XTX after a weeks-long wait. I can't wait to test it out.
 
-See also: [Easy vladmandic/automatic on RX 7900 XTX](https://are-we-gfx1100-yet.github.io/post/automatic/).
+If you don't want to build `torch` and `torchvision` by yourself and look for an easy way to have it work smoothly, read this:
+
+* [Easy vladmandic/automatic on RX 7900 XTX](https://are-we-gfx1100-yet.github.io/post/automatic/)
 
 ## Prerequisites
 
@@ -55,7 +57,7 @@ sudo apt install libstdc++-12-dev
 sudo apt install libpng-dev libjpeg-dev
 ```
 
-## Building
+## Build
 
 ### Enter venv environment
 
@@ -86,9 +88,11 @@ echo 2.0.1 > version.txt
 # update the path to yours
 export CMAKE_PREFIX_PATH="%HOME/stable-diffusion/venv"
 
+# set up essential environment variables
 export USE_CUDA=0
 export PYTORCH_ROCM_ARCH=gfx1100
 
+# install dependencies and build & install into venv
 pip install cmake ninja
 pip install -r requirements.txt
 pip install mkl mkl-include
@@ -139,8 +143,10 @@ echo 0.15.2 > version.txt
 # update the path to yours
 export CMAKE_PREFIX_PATH="%HOME/stable-diffusion/venv"
 
+# set up essential environment variables
 export FORCE_CUDA=1
 
+# build & install into venv
 python3 setup.py install
 ```
 
@@ -167,19 +173,39 @@ export HIP_VISIBLE_DEVICES=0
 python3 launch.py
 ```
 
+## Launch
+
+```bash
+cd ~/stable-diffusion
+source venv/bin/activate
+
+python3 launch.py
+```
+
 ## Caveats
 
 ### `--no-half-vae` and `ring sdma0 timeout`
 
 Usually you want to avoid some NaN issues via `--no-half-vae`, and it's enabled by default in `rocm_lab:rocm5.5-a1111-webui`. However, this makes `ring sdma0 timeout` much easier to raise, which resets the AMD GPU.
 
+### `RuntimeError: Please use PyTorch built with LAPACK support`
+
+LAPACK support should be provided by MKL, however, the process described above doesn't really include MKL.
+
+The MKL installed by `pip install mkl mkl-include` can't be found when building `torch`. If you want MKL to be included, you should be using `conda` for these dependencies, which is another story.
+
+If you want MKL and MAGMA to be included, here are some resources:
+
+* https://github.com/pytorch/pytorch/blob/main/.ci/docker/ubuntu-rocm/Dockerfile
+* https://github.com/evshiron/rocm_lab/pkgs/container/rocm_lab/95731066?tag=rocm5.5-focal-torch-dev
+
 ## Conclusions
 
-At first, I was building `pytorch` in Docker, with [rocm/composable_kernel:ck_ub20.04_rocm5.5](https://hub.docker.com/layers/rocm/composable_kernel/ck_ub20.04_rocm5.5/images/sha256-7ecc3b5e2e0104a58188ab5f26085c31815d2ed03955d66b805fc10d9e1f6873?context=explore) as the base, but I encountered Segmentation Fault and didn't have the time to try again. Hopefully [rocm/pytorch](https://hub.docker.com/r/rocm/pytorch) will update in recent days too.
+At first, I was building `torch` in Docker, with [rocm/composable_kernel:ck_ub20.04_rocm5.5](https://hub.docker.com/layers/rocm/composable_kernel/ck_ub20.04_rocm5.5/images/sha256-7ecc3b5e2e0104a58188ab5f26085c31815d2ed03955d66b805fc10d9e1f6873?context=explore) as the base, but I encountered Segmentation Fault and didn't have the time to try again. Hopefully [rocm/pytorch](https://hub.docker.com/r/rocm/pytorch) will update in recent days too.
 
 Compared to ROCm 5.5 RC4 in Docker, ROCm 5.5 + bare installation does improve in stability and VRAM management. Performance can be optimized further, but I am satisfied now.
 
-UPDATE: Using `PYTORCH_ROCM_ARCH=gfx1100` to build `torch` with support for 7000 series, and `FORCE_CUDA=1` to build `torchvision` with complete support for ROCm. You should not encounter Segmentation Fault after that.
+To be briefly, using `PYTORCH_ROCM_ARCH=gfx1100` to build `torch` with support for RX 7000 series, and `FORCE_CUDA=1` to build `torchvision` with complete support for ROCm. After that, you ought not to come across a Segmentation Fault.
 
 ## References
 
