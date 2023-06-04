@@ -75,6 +75,10 @@ Or you can patch `installer.py` like this (not recommended):
 sed -i "/os.environ.setdefault('HSA_OVERRIDE_GFX_VERSION', '10.3.0')/d" installer.py
 ```
 
+### `fatal error: 'limits' file not found`
+
+Just run `sudo apt install libstdc++-12-dev` for the missing header files.
+
 ### `PyTorch was not compiled with MAGMA support`
 
 The UniPC sampler uses MAGMA, which is not essential and I skip it.
