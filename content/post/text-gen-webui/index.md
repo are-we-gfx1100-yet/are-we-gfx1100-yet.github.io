@@ -14,7 +14,11 @@ tags:
 
 ### [Install AMDGPU driver with ROCm](https://docs.amd.com/bundle/ROCm-Installation-Guide-v5.5/page/How_to_Install_ROCm.html)
 
+Use `amdgpu-install --usecase=graphics,rocm` without `opencl`, which causes some issues at the moment.
+
 ### Download the following prebuilt wheels into `~/Downloads`
+
+EDIT (20230615): We have official index for `torch` with gfx1100 support now, but I don't know whether our custom BitsAndBytes will work with it or not, so the old method is kept.
 
 * `torch`
   * https://github.com/evshiron/rocm_lab/releases/download/v1.14.514/torch-2.0.1+gite19229c-cp310-cp310-linux_x86_64.whl
@@ -38,6 +42,9 @@ pushd text-generation-webui
 python3 -m venv venv
 source venv/bin/activate
 
+# install custom torch
+pip install ~/Downloads/torch-2.0.1+gite19229c-cp310-cp310-linux_x86_64.whl
+
 # install GPTQ-for-LLaMa-ROCm
 
 mkdir -p repositories
@@ -53,8 +60,7 @@ popd
 pip install -r requirements.txt
 pip uninstall -y bitsandbytes
 
-# install custom torch and bitsandbytes
-pip install ~/Downloads/torch-2.0.1+gite19229c-cp310-cp310-linux_x86_64.whl
+# install custom bitsandbytes
 pip install ~/Downloads/bitsandbytes-0.37.2-py3-none-any.whl
 ```
 
@@ -63,7 +69,10 @@ pip install ~/Downloads/bitsandbytes-0.37.2-py3-none-any.whl
 ```bash
 source venv/bin/activate
 
-python3 ./server.py --listen
+export HIP_VISIBLE_DEVICES=0
+export HSA_OVERRIDE_GFX_VERSION=11.0.0
+
+python3 ./server.py --listen --gptq-for-llama
 ```
 
 ## Notes
@@ -105,6 +114,8 @@ Output generated in 40.70 seconds (4.89 tokens/s, 199 tokens, context 6, seed 60
 ```
 
 ### 4-bit GPTQ inference with 4.5GB VRAM
+
+EDIT: With PCI-E 4.0 x16 slot, the generation speed is doubled.
 
 ```
 INFO:Loading Wizard-Vicuna-7B-Uncensored-GPTQ...
