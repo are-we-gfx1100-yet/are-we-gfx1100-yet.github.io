@@ -15,6 +15,8 @@ tags:
 
 ### Download the following prebuilt wheels into `~/Downloads`
 
+EDIT (20230615): As we have official index for `torch` with gfx1100 support now, there is no longer need for them.
+
 * `torch`
   * https://github.com/evshiron/rocm_lab/releases/download/v1.14.514/torch-2.0.1+gite19229c-cp310-cp310-linux_x86_64.whl
 * `torchvision`
@@ -40,7 +42,10 @@ git clone --depth=1 https://huggingface.co/THUDM/visualglm-6b
 python3 -m venv venv
 source venv/bin/activate
 
-# install custom torch and torchvision
+# option 1 (recommended): install torch with gfx1100 support
+pip3 install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/rocm5.5
+
+# option 2: install custom torch and torchvision
 pip install ~/Downloads/torch-2.0.1+gite19229c-cp310-cp310-linux_x86_64.whl
 pip install ~/Downloads/torchvision-0.15.2+f5f4cad-cp310-cp310-linux_x86_64.whl
 

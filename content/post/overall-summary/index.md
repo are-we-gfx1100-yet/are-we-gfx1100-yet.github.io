@@ -37,6 +37,8 @@ It's worth noting that the official Docker images don't support RX 7000 series o
 | Feature                | Resource                                                                                                      |
 | ---------------------- | ------------------------------------------------------------------------------------------------------------- |
 | ROCm                   | [How to Install ROCm](https://docs.amd.com/bundle/ROCm-Installation-Guide-v5.5/page/How_to_Install_ROCm.html) |
+| PyTorch Nightly        | pip3 install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/rocm5.5  |
+| Tensorflow Nightly     | http://ml-ci.amd.com:21096/job/tensorflow/job/nightly-rocmfork-develop-upstream/job/nightly-build-whl/        |
 | ROCm Ubuntu Docker     | https://hub.docker.com/r/rocm/dev-ubuntu-22.04                                                                |
 | ROCm PyTorch Docker    | https://hub.docker.com/r/rocm/pytorch                                                                         |
 | ROCm Tensorflow Docker | https://hub.docker.com/r/rocm/tensorflow                                                                      |

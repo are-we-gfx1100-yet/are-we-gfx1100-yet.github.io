@@ -11,13 +11,13 @@ tags:
 
 Yesterday I was regularly checking ROCm PRs, and surprised to discover that the ROCm 5.5.0 release notes had been merged, providing official support for my RTX 7900 XTX after a weeks-long wait. I can't wait to test it out.
 
-If you don't want to build `torch` and `torchvision` by yourself and look for an easy way to have it work smoothly, read this:
-
-* [Easy vladmandic/automatic on RX 7900 XTX](https://are-we-gfx1100-yet.github.io/post/automatic/)
+EDIT (20230615): As we have official index for `torch` with gfx1100 support now, there should be easier way to set this up soon.
 
 ## Prerequisites
 
 ### Install AMDGPU driver
+
+EDIT (20230615): The latest ROCm version is 5.5.1 now.
 
 ```bash
 # grab the latest amdgpu-install package
@@ -43,6 +43,8 @@ rocm-smi
 ```
 
 ### Install Ubuntu dependencies
+
+EDIT (20230615): Skip this step if you don't build `torch` by yourself.
 
 ```bash
 # correct me if anything is missing
@@ -72,7 +74,15 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 
-### Compile PyTorch 2.0.1
+### Option 1: Install `torch` from official index
+
+```bash
+pip3 install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/rocm5.5
+```
+
+### Option 2: Build `torch` by yourself
+
+#### Compile PyTorch 2.0.1
 
 ```bash
 # must be in venv
@@ -100,7 +110,7 @@ python3 tools/amd_build/build_amd.py
 python3 setup.py install
 ```
 
-### Test PyTorch functionality
+#### Test PyTorch functionality
 
 Run `python3` and try these out:
 
@@ -127,7 +137,7 @@ PYTORCH_TEST_WITH_ROCM=1 python3 test/run_test.py --verbose
 
 I failed in `test/profiler/test_profiler.py`, but it doesn't affect `stable-diffusion-webui` (hopefully).
 
-### Compile torchvision 0.15.2
+#### Compile torchvision 0.15.2
 
 ```bash
 # must be in venv

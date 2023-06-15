@@ -13,7 +13,13 @@ tags:
 
 ### [Install AMDGPU driver with ROCm](https://docs.amd.com/bundle/ROCm-Installation-Guide-v5.5/page/How_to_Install_ROCm.html)
 
-### Download the following prebuilt wheels and install into your `venv`
+### Option 1: Install `torch` from official index into your `venv`
+
+```bash
+pip3 install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/rocm5.5
+```
+
+### Option 2: Download the following prebuilt wheels and install into your `venv`
 
 * `torch`
   * https://github.com/evshiron/rocm_lab/releases/download/v1.14.514/torch-2.0.1+gite19229c-cp310-cp310-linux_x86_64.whl
