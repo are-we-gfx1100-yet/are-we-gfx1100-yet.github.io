@@ -13,7 +13,7 @@ tags:
 
 ### [Install AMDGPU driver with ROCm](https://docs.amd.com/bundle/ROCm-Installation-Guide-v5.5/page/How_to_Install_ROCm.html)
 
-### Option 1: Install `torch` from official index into your `venv`
+### Option 1 (recommended): Install `torch` from official index into your `venv`
 
 ```bash
 pip3 install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/rocm5.5

@@ -9,9 +9,11 @@ tags:
 - tutorial
 ---
 
-Yesterday I was regularly checking ROCm PRs, and surprised to discover that the ROCm 5.5.0 release notes had been merged, providing official support for my RTX 7900 XTX after a weeks-long wait. I can't wait to test it out.
+Yesterday I was regularly checking ROCm PRs, and surprised to discover that the ROCm 5.5.0 release notes had been merged, providing official support for my RX 7900 XTX after a weeks-long wait. I can't wait to test it out.
 
-EDIT (20230615): As we have official index for `torch` with gfx1100 support now, there should be easier way to set this up soon.
+**EDIT (20230615): As we have official index for `torch` with gfx1100 support now, there should be easier way to set this up soon.**
+
+See also [Easy vladmandic/automatic on RX 7900 XTX](https://are-we-gfx1100-yet.github.io/post/automatic/), which is recommended for a smooth experience and has more troubleshooting tips.
 
 ## Prerequisites
 
@@ -74,7 +76,7 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 
-### Option 1: Install `torch` from official index
+### Option 1 (recommended): Install `torch` from official index
 
 ```bash
 pip3 install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/rocm5.5

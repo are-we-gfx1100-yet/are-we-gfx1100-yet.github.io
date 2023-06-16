@@ -16,7 +16,7 @@ tags:
 
 ### Download the following prebuilt wheels into `~/Downloads`
 
-EDIT (20230615): As we have official index for `torch` with gfx1100 support now, there is no longer need for them.
+**EDIT (20230615): As we have official index for `torch` with gfx1100 support now, there is no longer need for them.**
 
 * `torch`
   * https://github.com/evshiron/rocm_lab/releases/download/v1.14.514/torch-2.0.1+gite19229c-cp310-cp310-linux_x86_64.whl
