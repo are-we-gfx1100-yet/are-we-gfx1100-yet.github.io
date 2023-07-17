@@ -175,7 +175,12 @@ cd stable-diffusion-webui
 
 # remove torch from requirements.txt
 # idk if it is ok to skip
-sed '/torch/d' requirements.txt
+sed -i '/torch/d' requirements.txt
+
+# Add libraries that were removed accidentally
+echo "torchdiffeq" >> requirements.txt 
+echo "torchsde" >> requirements.txt
+echo "pytorch_lightning" >> requirements.txt
 
 pip install -r requirements.txt
 
