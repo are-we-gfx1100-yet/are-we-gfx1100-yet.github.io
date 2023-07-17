@@ -175,7 +175,7 @@ cd stable-diffusion-webui
 
 # remove torch from requirements.txt
 # idk if it is ok to skip
-sed '/torch/d' requirements.txt
+sed -i '/^torch\s*$/d' requirements.txt
 
 pip install -r requirements.txt
 
