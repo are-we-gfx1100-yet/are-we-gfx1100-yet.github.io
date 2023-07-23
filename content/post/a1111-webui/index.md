@@ -51,7 +51,8 @@ pip3 uninstall torch torchvision
 pip3 install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/rocm5.5
 
 # download a launch script from gist, you can create it yourself if you are concerned
-curl https://gist.githubusercontent.com/evshiron/8cf4de34aa01e217ce178b8ed54a2c43/raw/e5743505afe6b2a329908bbefda93d98b98940ac/launch.sh > launch.sh
+# https://gist.github.com/evshiron/8cf4de34aa01e217ce178b8ed54a2c43
+curl https://gist.githubusercontent.com/evshiron/8cf4de34aa01e217ce178b8ed54a2c43/raw/a27b9575b0eb1f688042d4acf606ebfba96f5ace/launch.sh > launch.sh
 ```
 
 ### Launch
