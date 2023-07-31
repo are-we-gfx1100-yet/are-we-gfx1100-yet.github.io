@@ -329,6 +329,6 @@ Currently, the SDP attention is not optimized for ROCm, where the math implement
 
 For very large image generation, [Tiled VAE](https://github.com/pkuliyi2015/multidiffusion-upscaler-for-automatic1111) is commonly used, which saves a lot of VRAM and you should try that. It's worth noting that a Decoder Tile Size of 128 to 160 works better in my case.
 
-### `fatal error: 'limits' file not found`
+### `fatal error: 'limits' file not found` and `RuntimeError: miopenStatusUnknownError`
 
 Just run `sudo apt install libstdc++-12-dev` for the missing header files.
