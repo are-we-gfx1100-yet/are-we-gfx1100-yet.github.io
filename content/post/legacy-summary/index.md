@@ -1,7 +1,6 @@
 ---
-title: Overall Summary
+title: Legacy summary
 date: 2023-05-04
-weight: -50
 ---
 
 ## [How to Install ROCm](https://docs.amd.com/bundle/ROCm-Installation-Guide-v5.5/page/How_to_Install_ROCm.html)
@@ -10,7 +9,7 @@ weight: -50
 
 https://github.com/evshiron/rocm_lab/releases
 
-## Recommended
+## Tutorials
 
 | Feature                          | Resource                                                                                 |
 | -------------------------------- | ---------------------------------------------------------------------------------------- |
