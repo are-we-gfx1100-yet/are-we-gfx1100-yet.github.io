@@ -16,6 +16,9 @@ Nowadays, it's much simpler to set up Stable Diffusion WebUI on RX 7900 XTX. To 
 ### Prerequisites
 
 ```bash
+# install dependencies
+sudo apt update && sudo apt install -y git python3-pip python3-venv python3-dev libstdc++-12-dev
+
 # install the amdgpu driver with rocm support
 curl -O https://repo.radeon.com/amdgpu-install/5.6/ubuntu/jammy/amdgpu-install_5.6.50600-1_all.deb
 sudo dpkg -i amdgpu-install_5.6.50600-1_all.deb
@@ -307,7 +310,7 @@ Just use other samplers instead.
 
 ## Troubleshooting
 
-### Image generation freezes or performs badly
+### Freezed image generation / Bad performance / Core dumped
 
 * Run `rocminfo`
   * If the command is not found, reinstall the AMDGPU driver
