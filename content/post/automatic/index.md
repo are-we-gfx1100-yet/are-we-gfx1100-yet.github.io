@@ -1,7 +1,7 @@
 ---
-title: Easy vladmandic/automatic on RX 7900 XTX
+title: Easy SD:Next on RX 7900 XTX
 date: 2023-05-15
-image: images/showcase/waifu.jpg
+weight: -80
 tags:
 - torch
 - torchvision
@@ -12,99 +12,46 @@ tags:
 
 ## Prerequisites
 
-### [Install AMDGPU driver with ROCm](https://docs.amd.com/bundle/ROCm-Installation-Guide-v5.5/page/How_to_Install_ROCm.html)
+* https://are-we-gfx1100-yet.github.io/post/a1111-webui/#prerequisites
 
-### Download the following prebuilt wheels into `~/Downloads`
-
-**EDIT (20230615): As we have official index for `torch` with gfx1100 support now, there is no longer need for them.**
-
-* `torch`
-  * https://github.com/evshiron/rocm_lab/releases/download/v1.14.514/torch-2.0.1+gite19229c-cp310-cp310-linux_x86_64.whl
-* `torchvision`
-  * https://github.com/evshiron/rocm_lab/releases/download/v1.14.514/torchvision-0.15.2+f5f4cad-cp310-cp310-linux_x86_64.whl
-
-If somehow the above links become outdated, you can always find latest links here:
-
-* https://github.com/evshiron/rocm_lab/releases
-
-and don't forget to use their new filenames in "Install" section.
-
-## Install
+## Install the official SD:Next
 
 ```bash
 git clone https://github.com/vladmandic/automatic
 cd automatic
 
-# create default venv dir
-python3 -m venv venv
-source venv/bin/activate
+cat << __EOF > launch.sh
+#!/usr/bin/env bash
 
-# option 1 (recommended): install torch with gfx1100 support
-pip3 install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/rocm5.5
-
-# option 2: install custom torch and torchvision
-pip install ~/Downloads/torch-2.0.1+gite19229c-cp310-cp310-linux_x86_64.whl
-pip install ~/Downloads/torchvision-0.15.2+f5f4cad-cp310-cp310-linux_x86_64.whl
-```
-
-## Launch
-
-Copy and paste the following code as `launch.sh` in `automatic` dir:
-
-```bash
-# HSA_OVERRIDE_GFX_VERSION defaults to 10.3.0 and will fail our gfx1100 if we don't set it explicitly
+# update the index if yours is not the first gpu listed in rocminfo
+export HIP_VISIBLE_DEVICES=0
 export HSA_OVERRIDE_GFX_VERSION=11.0.0
 
-# set up the launch arguments you want
-export COMMANDLINE_ARGS='--listen --medvram'
+export TORCH_COMMAND=torchvision --pre --index-url https://download.pytorch.org/whl/nightly/rocm5.6
+export TENSORFLOW_PACKAGE=tensorflow==2.12.0
+
+./webui.sh
+__EOF
+
+chmod +x launch.sh
+
+./launch.sh
+```
+
+## Install our fork of SD:Next
+
+```bash
+git clone https://github.com/are-we-gfx1100-yet/automatic
+cd automatic
 
 ./webui.sh
 ```
 
-Afterwards, just `cd automatic`, and `bash launch.sh`, the WebUI should launch and just work.
+See also:
 
-## Caveats
+* https://github.com/are-we-gfx1100-yet/automatic
+* [What is this?](https://github.com/are-we-gfx1100-yet/automatic/discussions/1)
 
-### `RuntimeError: HIP error: invalid argument`
+## Troubleshooting
 
-`HSA_OVERRIDE_GFX_VERSION` defaults to `10.3.0` when ROCm is detected, which will fail our RX 7000 series. So don't forget to set it explicitly:
-
-```bash
-HSA_OVERRIDE_GFX_VERSION=11.0.0 ./webui.sh
-```
-
-Or you can patch `installer.py` like this (not recommended):
-
-```bash
-# remove HSA_OVERRIDE_GFX_VERSION which will fail our gfx1100
-sed -i "/os.environ.setdefault('HSA_OVERRIDE_GFX_VERSION', '10.3.0')/d" installer.py
-```
-
-### `fatal error: 'limits' file not found`
-
-Just run `sudo apt install libstdc++-12-dev` for the missing header files.
-
-### `PyTorch was not compiled with MAGMA support`
-
-The UniPC sampler uses MAGMA, which is not essential and I skip it.
-
-Just use other samplers instead.
-
-### `HIP out of memory`
-
-Go to "Settings" in Automatic WebUI, set "Cross-attention optimization method" to "Doggettx's" and restart the process (not "Restart Server").
-
-Currently, SDP attention unfortunately doesn't help with RX 7900 XTX's iteration speed and is memory hungry. It's better to switch back to old optimization and stay tuned.
-
-### `ring sdma0 timeout`
-
-The AMDGPU driver will reset the graphics card if pushed too hard.
-
-For Tiled VAE, a Decoder Tile Size smaller than `128` will make the GPU work more stable and reach higher potential.
-
-`--no-half-vae` might help with black image issues, but will increase the chance to reset, so use it on your own risk.
-
-## Showcases
-
-![images/showcase/waifu.jpg](images/showcase/waifu.jpg)
- 
+* https://are-we-gfx1100-yet.github.io/post/a1111-webui/#troubleshooting

@@ -1,6 +1,7 @@
 ---
 title: Run A1111 WebUI on Ubuntu 22.04 with RX 7900 XTX
 date: 2023-05-02
+weight: -90
 tags:
 - torch
 - torchvision
