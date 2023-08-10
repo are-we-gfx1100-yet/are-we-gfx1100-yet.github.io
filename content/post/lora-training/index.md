@@ -37,6 +37,8 @@ In terminal window B:
 ```bash
 cd automatic
 
+# export HIP_VISIBLE_DEVICES if you have multiple available gpus
+
 # `--type lyco` works too
 python3 cli/train.py --type lora --name cutecats --tag cutecats --input datasets/cutecats
 ```
