@@ -1,6 +1,7 @@
 ---
 title: Run Text Generation WebUI on RX 7900 XTX
 date: 2023-05-24
+weight: -50
 tags:
 - torch
 - text-gen-webui
@@ -12,56 +13,100 @@ tags:
 
 ## Prerequisites
 
-### [Install AMDGPU driver with ROCm](https://docs.amd.com/bundle/ROCm-Installation-Guide-v5.5/page/How_to_Install_ROCm.html)
+* https://are-we-gfx1100-yet.github.io/post/a1111-webui/#prerequisites
 
-Use `amdgpu-install --usecase=graphics,rocm` without `opencl`, which causes some issues at the moment.
-
-### Download the following prebuilt wheels into `~/Downloads`
-
-**EDIT (20230615): We have official index for `torch` with gfx1100 support now, but I don't know whether our custom BitsAndBytes will work with it or not, so the old method is kept.**
-
-* `torch`
-  * https://github.com/evshiron/rocm_lab/releases/download/v1.14.514/torch-2.0.1+gite19229c-cp310-cp310-linux_x86_64.whl
-* `bitsandbytes`
-  * https://github.com/evshiron/rocm_lab/releases/download/v1.14.514/bitsandbytes-0.37.2-py3-none-any.whl
-
-If somehow the above links become outdated, you can always find latest links here:
-
-* https://github.com/evshiron/rocm_lab/releases
-
-and don't forget to use their new filenames in "Install" section.
+Use `amdgpu-install --usecase=graphics,rocm` without `opencl`, which might cause HIP issues at the moment.
 
 ## Install
 
 ```bash
 # clone text-generation-webui
 git clone https://github.com/oobabooga/text-generation-webui
-pushd text-generation-webui
+cd text-generation-webui
 
 # activate venv
 python3 -m venv venv
 source venv/bin/activate
 
-# install custom torch
-pip install ~/Downloads/torch-2.0.1+gite19229c-cp310-cp310-linux_x86_64.whl
+# install dependencies
+pip3 install -r requirements.txt
+# remove packages built for cuda
+pip3 uninstall bitsandbytes gptq-for-llama auto-gptq exllama
 
-# install GPTQ-for-LLaMa-ROCm
+# replace torch with the rocm one
+pip3 uninstall torch
+# pip3 install --pre torch --index-url https://download.pytorch.org/whl/nightly/rocm5.5
+pip3 install --pre torch --index-url https://download.pytorch.org/whl/nightly/rocm5.6
+```
 
-mkdir -p repositories
-pushd repositories
+### BitsAndBytes
 
-git clone https://github.com/WapaMario63/GPTQ-for-LLaMa-ROCm GPTQ-for-LLaMa
+BitsAndBytes is used in `transformers` when `load_in_8bit` or `load_in_4bit` is enabled. Unfortunately it has bad ROCm support and low performance on Navi 31.
 
-pushd GPTQ-for-LLaMa && python3 setup_rocm.py install && popd
+If you only want to run some LLMs locally, quantized models in GGML or GPTQ formats might suit your needs better.
 
-popd
+To use BitsAndBytes for other purposes, a tutorial about building BitsAndBytes for ROCm with limited features might be added in the future.
 
-# install dependencies and uninstall bitsandbytes
-pip install -r requirements.txt
-pip uninstall -y bitsandbytes
+### GPTQ for LLaMA
 
-# install custom bitsandbytes
-pip install ~/Downloads/bitsandbytes-0.37.2-py3-none-any.whl
+GPTQ for LLaMA has now been superseded by AutoGPTQ. Use AutoGPTQ instead.
+
+### AutoGPTQ
+
+AutoGPTQ supports ROCm recently, and you can now do quantization with ROCm too.
+
+Unfortunately, only builds for ROCm 5.4.2 are provided officially for now, so we have to build it ourself.
+
+```bash
+cd text-generation-webui
+
+source venv/bin/activate
+
+mkdir repositories
+cd repositories
+
+git clone https://github.com/PanQiWei/AutoGPTQ
+cd AutoGPTQ
+
+ROCM_VERSION=5.6 pip3 install -e .
+```
+
+If it doesn't compile, apply this patch (add a newline in the end) using `git apply`:
+
+```
+diff --git a/autogptq_cuda/exllama/hip_compat.cuh b/autogptq_cuda/exllama/hip_compat.cuh
+index 5cd2e85..79e0930 100644
+--- a/autogptq_cuda/exllama/hip_compat.cuh
++++ b/autogptq_cuda/exllama/hip_compat.cuh
+@@ -46,4 +46,6 @@ __host__ __forceinline__ hipblasStatus_t __compat_hipblasHgemm(hipblasHandle_t
+ #define rocblas_set_stream hipblasSetStream
+ #define rocblas_hgemm __compat_hipblasHgemm
+ 
++#define hipblasHgemm __compat_hipblasHgemm
++
+ #endif
+```
+
+And run `ROCM_VERSION=5.6 pip3 install -e .` again.
+
+### ExLlama
+
+ExLlama has highly optimized kernels for GPTQ 4bit, which provides impressive performance for inference.
+
+```bash
+cd text-generation-webui
+
+source venv/bin/activate
+
+mkdir repositories
+cd repositories
+
+git clone https://github.com/turboderp/exllama
+cd exllama
+
+# there is no need to install exllama manually
+# as exllama will build its extensions when used in text-generation-webui
+# expect slow launch time for the first run
 ```
 
 ## Launch
@@ -69,25 +114,9 @@ pip install ~/Downloads/bitsandbytes-0.37.2-py3-none-any.whl
 ```bash
 source venv/bin/activate
 
+# use the first gpu if there are many
 export HIP_VISIBLE_DEVICES=0
-export HSA_OVERRIDE_GFX_VERSION=11.0.0
-
-python3 ./server.py --listen --gptq-for-llama
-```
-
-## Notes
-
-4-bit BitsAndBytes inference doesn't work.
-
-GPTQ quantization doesn't work.
-
-## Caveats
-
-### `RuntimeError: HIP error: invalid argument`
-
-This error usually occurs when the GPU architecture detection malfuntions. Let's specify it explicitly:
-
-```bash
+# override the gfx version
 export HSA_OVERRIDE_GFX_VERSION=11.0.0
 
 python3 ./server.py --listen
@@ -95,36 +124,40 @@ python3 ./server.py --listen
 
 ## Performance
 
-Tested on RX 7900 XTX using PCI-E 3.0 x16 slot.
+Tested on RX 7900 XTX using PCI-E 4.0 x16 slot.
 
-### Transformers inference with 13.6GB VRAM
-
-```
-INFO:Loading 7B-hf...
-INFO:Loaded the model in 6.34 seconds.
-Output generated in 9.37 seconds (21.24 tokens/s, 199 tokens, context 27, seed 1005554483)
-```
-
-### 8-bit BitsAndBytes inference with 7.9GB VRAM
+### 7B Transformers inference
 
 ```
 INFO:Loading 7B-hf...
-INFO:Loaded the model in 6.65 seconds.
-Output generated in 40.70 seconds (4.89 tokens/s, 199 tokens, context 6, seed 603994963)
+INFO:Loaded the model in 10.36 seconds.
+Output generated in 11.64 seconds (28.08 tokens/s, 327 tokens, context 52, seed 832229644)
 ```
 
-### 4-bit GPTQ inference with 4.5GB VRAM
-
-EDIT: With PCI-E 4.0 x16 slot, the generation speed is doubled.
+### 7B 4-bit AutoGPTQ inference
 
 ```
 INFO:Loading Wizard-Vicuna-7B-Uncensored-GPTQ...
 INFO:Loaded the model in 2.10 seconds.
-Output generated in 17.17 seconds (17.42 tokens/s, 299 tokens, context 52, seed 722332956)
+Output generated in 8.93 seconds (45.90 tokens/s, 410 tokens, context 52, seed 159282383)
 ```
 
-## Conclusions
+### 7B 4-bit ExLlama inference
 
-It is exciting to see that 4-bit GPTQ can do inference smoothly on RX 7900 XTX, which demonstrates that ROCm platform has a reliable 4-bit quantization solution.
+```
+INFO:Loading Wizard-Vicuna-7B-Uncensored-GPTQ...
+INFO:Loaded the model in 1.44 seconds.
+Output generated in 6.15 seconds (76.30 tokens/s, 469 tokens, context 51, seed 353336174)
+```
 
-Although 8-bit BitsAndBytes can also do inference, its performance is significantly degraded, let's look forward to its future improvements.
+## Caveats
+
+### `RuntimeError: HIP error: invalid argument`
+
+This error usually occurs when the recognized GPU architecture is wrong. Let's specify it explicitly (for Navi 31):
+
+```bash
+export HSA_OVERRIDE_GFX_VERSION=11.0.0
+
+python3 ./server.py --listen
+```
