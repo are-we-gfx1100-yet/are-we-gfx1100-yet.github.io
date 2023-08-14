@@ -17,6 +17,8 @@ tags:
 
 To follow this tutorial, it's recommended to use our fork of SD:Next.
 
+The official SD:Next will be able to do so once [the PR](https://github.com/vladmandic/automatic/pull/2009) is landed.
+
 ### Prepare
 
 Prepare you images for training and place them in a directory (e.g. `automatic/datasets/cutecats`).
@@ -41,8 +43,12 @@ cd automatic
 
 # `--type lyco` works too
 python3 cli/train.py --type lora --name cutecats --tag cutecats --input datasets/cutecats
-```
 
+# training for sd-xl is also supported by adding --sdxl to cli/train.py
+# and add --model to specify the sd-xl checkpoint, or you need to select it in the webui
+# currently no_half_vae is used to fix the original vae, which will cost more vram and have lower performance
+# so it only works on rx 7900 xtx/xt for now, unless you use the fixed vae (see pr for detail)
+```
 
 Now you will see logs about images being processed according to the steps specified in the `--process` argument.
 
