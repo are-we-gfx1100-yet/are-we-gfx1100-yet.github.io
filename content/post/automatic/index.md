@@ -19,6 +19,10 @@ tags:
 ```bash
 git clone https://github.com/vladmandic/automatic
 cd automatic
+# do not export TORCH_COMMAND, as it will be automatically handled for navi 3x
+./webui.sh
+
+# as of 2023-08-14, the commands below are no longer needed
 
 cat << __EOF > launch.sh
 #!/usr/bin/env bash
@@ -43,7 +47,7 @@ chmod +x launch.sh
 ```bash
 git clone https://github.com/are-we-gfx1100-yet/automatic
 cd automatic
-
+# do not export TORCH_COMMAND, as it will be automatically handled for navi 3x
 ./webui.sh
 ```
 
