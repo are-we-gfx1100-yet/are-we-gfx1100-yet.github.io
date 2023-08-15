@@ -47,6 +47,10 @@ If you only want to run some LLMs locally, quantized models in GGML or GPTQ form
 
 To use BitsAndBytes for other purposes, a tutorial about building BitsAndBytes for ROCm with limited features might be added in the future.
 
+Here is a promising fork if you are willing to try it by yourself (disclaimer: I haven't tested it yet):
+
+* https://github.com/arlo-phoenix/bitsandbytes-rocm-5.6
+
 ### GPTQ for LLaMA
 
 GPTQ for LLaMA has now been superseded by AutoGPTQ. Use AutoGPTQ instead.
