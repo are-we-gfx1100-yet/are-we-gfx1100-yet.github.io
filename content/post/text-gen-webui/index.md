@@ -59,7 +59,7 @@ GPTQ for LLaMA has now been superseded by AutoGPTQ. Use AutoGPTQ instead.
 
 AutoGPTQ supports ROCm recently, and you can now do quantization with ROCm too.
 
-Unfortunately, only builds for ROCm 5.4.2 are provided officially for now, so we have to build it ourself.
+Unfortunately, only builds for ROCm 5.4.2 are provided officially for now, so we have to build it ourselves.
 
 ```bash
 cd text-generation-webui
@@ -75,23 +75,22 @@ cd AutoGPTQ
 ROCM_VERSION=5.6 pip3 install -e .
 ```
 
-If it doesn't compile, apply this patch (add a newline in the end) using `git apply`:
+If it doesn't compile, edit [**/exllama/hip_compat.cuh](https://github.com/PanQiWei/AutoGPTQ/blob/v0.4.2/autogptq_cuda/exllama/hip_compat.cuh) like this:
 
-```
-diff --git a/autogptq_cuda/exllama/hip_compat.cuh b/autogptq_cuda/exllama/hip_compat.cuh
-index 5cd2e85..79e0930 100644
---- a/autogptq_cuda/exllama/hip_compat.cuh
-+++ b/autogptq_cuda/exllama/hip_compat.cuh
-@@ -46,4 +46,6 @@ __host__ __forceinline__ hipblasStatus_t __compat_hipblasHgemm(hipblasHandle_t
- #define rocblas_set_stream hipblasSetStream
- #define rocblas_hgemm __compat_hipblasHgemm
- 
-+#define hipblasHgemm __compat_hipblasHgemm
-+
- #endif
+> In `v0.4.1` and `v0.4.2`, the file is located at `autogptq_cuda/exllama/hip_compat.cuh`, and it's now located at `autogptq_extension/exllama/hip_compat.cuh` in the `main` branch. Many thanks to Xil for pointing out this change.
+
+```cpp
+#define rocblas_handle hipblasHandle_t
+#define rocblas_operation_none HIPBLAS_OP_N
+#define rocblas_get_stream hipblasGetStream
+#define rocblas_set_stream hipblasSetStream
+#define rocblas_hgemm __compat_hipblasHgemm
+
+// EDIT: add this line here
+#define hipblasHgemm __compat_hipblasHgemm
 ```
 
-And run `ROCM_VERSION=5.6 pip3 install -e .` again.
+After that, run `ROCM_VERSION=5.6 pip3 install -e .` again.
 
 ### ExLlama
 
