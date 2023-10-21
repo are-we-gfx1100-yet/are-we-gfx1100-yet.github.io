@@ -31,7 +31,7 @@ cat << __EOF > launch.sh
 export HIP_VISIBLE_DEVICES=0
 export HSA_OVERRIDE_GFX_VERSION=11.0.0
 
-export TORCH_COMMAND=torchvision --pre --index-url https://download.pytorch.org/whl/nightly/rocm5.6
+export TORCH_COMMAND=torch torchvision --index-url https://download.pytorch.org/whl/rocm5.6
 export TENSORFLOW_PACKAGE=tensorflow==2.12.0
 
 ./webui.sh

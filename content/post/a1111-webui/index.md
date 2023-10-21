@@ -52,8 +52,8 @@ pip3 install -r requirements.txt
 
 # replace torch with the rocm one
 pip3 uninstall torch torchvision
-# pip3 install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/rocm5.5
-pip3 install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/rocm5.6
+# pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm5.5
+pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm5.6
 
 # download a launch script from gist, you can create it yourself if you are concerned
 # https://gist.github.com/evshiron/8cf4de34aa01e217ce178b8ed54a2c43
