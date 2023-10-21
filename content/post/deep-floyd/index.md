@@ -1,5 +1,5 @@
 ---
-title: Run deep-floyd/IF on RX 7900 XTX
+title: Run deep-floyd/IF on RX 7900 XTX (out of maintenance)
 date: 2023-05-17
 image: images/showcase/if_stage_III.png
 tags:

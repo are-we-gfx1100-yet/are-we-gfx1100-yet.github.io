@@ -1,5 +1,5 @@
 ---
-title: Legacy summary
+title: Legacy summary (out of maintenance)
 date: 2023-05-04
 ---
 
