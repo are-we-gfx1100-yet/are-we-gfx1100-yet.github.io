@@ -29,14 +29,11 @@ python3 -m venv venv
 source venv/bin/activate
 
 # install dependencies
-pip3 install -r requirements.txt
-# remove packages built for cuda
-pip3 uninstall bitsandbytes gptq-for-llama auto-gptq exllama
 
-# replace torch with the rocm one
-pip3 uninstall torch
-# pip3 install --pre torch --index-url https://download.pytorch.org/whl/nightly/rocm5.5
-pip3 install --pre torch --index-url https://download.pytorch.org/whl/nightly/rocm5.6
+pip3 install torch --index-url https://download.pytorch.org/whl/rocm5.6
+# the wheels listed in requirements_amd.txt are built for this specified version of torch
+# using other versions here will fail when loading dynamic libraries
+pip3 install -r requirements_amd.txt
 ```
 
 ### BitsAndBytes
@@ -50,67 +47,6 @@ To use BitsAndBytes for other purposes, a tutorial about building BitsAndBytes f
 Here is a promising fork if you are willing to try it by yourself (disclaimer: I haven't tested it yet):
 
 * https://github.com/arlo-phoenix/bitsandbytes-rocm-5.6
-
-### GPTQ for LLaMA
-
-GPTQ for LLaMA has now been superseded by AutoGPTQ. Use AutoGPTQ instead.
-
-### AutoGPTQ
-
-AutoGPTQ supports ROCm recently, and you can now do quantization with ROCm too.
-
-Unfortunately, only builds for ROCm 5.4.2 are provided officially for now, so we have to build it ourselves.
-
-```bash
-cd text-generation-webui
-
-source venv/bin/activate
-
-mkdir repositories
-cd repositories
-
-git clone https://github.com/PanQiWei/AutoGPTQ
-cd AutoGPTQ
-
-ROCM_VERSION=5.6 pip3 install -e .
-```
-
-If it doesn't compile, edit [**/exllama/hip_compat.cuh](https://github.com/PanQiWei/AutoGPTQ/blob/v0.4.2/autogptq_cuda/exllama/hip_compat.cuh) like this:
-
-> In `v0.4.1` and `v0.4.2`, the file is located at `autogptq_cuda/exllama/hip_compat.cuh`, and it's now located at `autogptq_extension/exllama/hip_compat.cuh` in the `main` branch. Many thanks to Xil for pointing out this change.
-
-```cpp
-#define rocblas_handle hipblasHandle_t
-#define rocblas_operation_none HIPBLAS_OP_N
-#define rocblas_get_stream hipblasGetStream
-#define rocblas_set_stream hipblasSetStream
-#define rocblas_hgemm __compat_hipblasHgemm
-
-// EDIT: add this line here
-#define hipblasHgemm __compat_hipblasHgemm
-```
-
-After that, run `ROCM_VERSION=5.6 pip3 install -e .` again.
-
-### ExLlama
-
-ExLlama has highly optimized kernels for GPTQ 4bit, which provides impressive performance for inference.
-
-```bash
-cd text-generation-webui
-
-source venv/bin/activate
-
-mkdir repositories
-cd repositories
-
-git clone https://github.com/turboderp/exllama
-cd exllama
-
-# there is no need to install exllama manually
-# as exllama will build its extensions when used in text-generation-webui
-# expect slow launch time for the first run
-```
 
 ## Launch
 
@@ -155,12 +91,16 @@ Output generated in 6.15 seconds (76.30 tokens/s, 469 tokens, context 51, seed 3
 
 ## Caveats
 
-### `RuntimeError: HIP error: invalid argument`
+### `RuntimeError: HIP error: invalid argument` or `Memory access fault`
 
-This error usually occurs when the recognized GPU architecture is wrong. Let's specify it explicitly (for Navi 31):
+These errors usually occur when the GPU is mistakenly recognized. Making it explicit should solve the problem:
 
 ```bash
+# for navi 3x
 export HSA_OVERRIDE_GFX_VERSION=11.0.0
+
+# for navi 2x
+export HSA_OVERRIDE_GFX_VERSION=10.3.0
 
 python3 ./server.py --listen
 ```
