@@ -97,7 +97,7 @@ image[0].save("./if_stage_III.png")
 ![images/showcase/if_stage_III.png](images/showcase/if_stage_III.png)
 
 
-## Conclusions
+## Conclusion
 
 After installing our pre-built PyTorch, we were able to successfully run the three-step example script of [deep-floyd/IF](https://github.com/deep-floyd/IF) on RX 7900 XTX. 
 
