@@ -81,7 +81,7 @@ As of November 26, 2023, there is no instruction for building custom models dire
 
 On Windows, Vulkan backend will be used, because unfortunately ROCm for Windows doesn't work with AI now.
 
-### In WSL2 Ubuntu
+## Build in WSL2 Ubuntu
 
 ```bash
 sudo apt update
@@ -123,7 +123,7 @@ du -ah dist
 mv dist /mnt/drive/to/your/workspace
 ```
 
-### In Windows 10
+## Run in Windows 10
 
 Assuming you have followed the "Does it work?" section, the steps are simple (in workspace directory):
 
